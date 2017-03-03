@@ -12,7 +12,7 @@
 #'   sanity checks at the moment.
 #'
 #' @examples
-#' loadorinstall(dplyr, data.table, magrittr)
+#' load_or_install(dplyr, data.table, magrittr)
 #'
 #' @export
 load_or_install <-
@@ -31,8 +31,10 @@ load_or_install <-
       if(!is.character(pkg))
         pkg <- deparse(pkg)
 
-      if(!require(pkg, character.only = TRUE))
+      if(!requireNamespace(pkg, quietly = TRUE))
       {
+        if(pkg %notin% available.packages()[,1])
+          stop("Package ", pkg, " not found in available sources")
         utils::install.packages(pkg)
         install.counter <- install.counter + 1
       }
