@@ -2,4 +2,7 @@
 
 export("%notin%")
 export(load_or_install)
+export(pdf_statup)
 export(provide)
+import(ensurer)
+import(stringr)
