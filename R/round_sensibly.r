@@ -37,45 +37,47 @@
 #'
 #' # rounded to 1 significant digit of separation.
 #' round_sensibly(x, 1, .separation = FALSE)
-round_sensibly <-
-  ensurer::function_(
-    .x ~ numeric,
-    .digits ~ numeric: 0,
-    .separation ~ logical_scalar: TRUE,
-    {
+round_sensibly <- function(
+  .x,
+  .digits = 0,
+  .separation = TRUE
+)
+{
+  ensure_that(.x, is.numeric)
+  ensure_that(.digits, is.numeric)
+  type_logical_scalar(.separation)
 
-      # if the vector is all NA or there is only one valid value return the input.
-      if ( all(is.na(.x)) ||
-           range(.x, na.rm = TRUE) %>% diff %>% {. == 0} )
-        return(.x)
+  # if the vector is all NA or there is only one valid value return the input.
+  if ( all(is.na(.x)) ||
+       range(.x, na.rm = TRUE) %>% diff %>% {. == 0} )
+    return(.x)
 
-      # find the power of 10 that separates the values of the input
-      sig.level <-
-        range(.x, na.rm = TRUE) %>%
-        diff %>%
-        log(10) %>%
-        trunc
+  # find the power of 10 that separates the values of the input
+  sig.level <-
+    range(.x, na.rm = TRUE) %>%
+    diff %>%
+    log(10) %>%
+    trunc
 
-      if(isTRUE(.separation))
-      {
-        # find the minimum number of significant digits that separates all
-        # values.
-        min.sep <-
-          # of all the values in the input...
-          .x %>%
-          unique %>%
-          # ... find the smallest difference...
-          sort %>%
-          diff %>%
-          min %>%
-          # ... and use its power of 10 as min.sep
-          log(10) %>%
-          trunc %>%
-          {. - 1}
+  if(isTRUE(.separation))
+  {
+    # find the minimum number of significant digits that separates all
+    # values.
+    min.sep <-
+      # of all the values in the input...
+      .x %>%
+      unique %>%
+      # ... find the smallest difference...
+      sort %>%
+      diff %>%
+      min %>%
+      # ... and use its power of 10 as min.sep
+      log(10) %>%
+      trunc %>%
+      {. - 1}
 
-        sig.level <- min(sig.level, min.sep, na.rm = TRUE)
-      }
+    sig.level <- min(sig.level, min.sep, na.rm = TRUE)
+  }
 
-      round(.x, .digits - sig.level)
-    }
-  )
+  round(.x, .digits - sig.level)
+}
