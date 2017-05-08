@@ -2,6 +2,7 @@
 
 export("%notin%")
 export("%outside%")
+export(as_numeric_comma)
 export(load_or_install)
 export(outside)
 export(percentify)

@@ -49,18 +49,19 @@ provide <-
         c(
           .conditions,
           Filter(x = .dots,
-                 f = function(x)
-                   is.call(x))
+                 f = is.call)
         )
 
       names <-
         Filter(x = .dots,
                f = function(x)
-                 is.character(x) || is.symbol(x))
+                 is.character(x) || is.symbol(x)) %>%
+        lapply(as.character) %>%
+        unlist
 
       .exports <-
         c(
-          sapply(names, as.character),
+          names,
           names(.conditions)
         )
     }
