@@ -37,6 +37,10 @@
 #'
 #' # rounded to 1 significant digit of separation.
 #' round_sensibly(x, 1, .separation = FALSE)
+#'
+#' @import ensurer
+#' @import magrittr
+#' @export
 round_sensibly <- function(
   .x,
   .digits = 0,
