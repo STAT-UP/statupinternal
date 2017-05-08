@@ -47,7 +47,7 @@ round_sensibly <- function(
   .separation = TRUE
 )
 {
-  ensure_that(.x, is.numeric)
+  ensure_that(.x, is.numeric(.) || is.logical(.))
   ensure_that(.digits, is.numeric)
   type_logical_scalar(.separation)
 
