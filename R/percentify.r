@@ -6,8 +6,7 @@
 #' @param .x Numeric vector. Input data
 #' @param .digits Integer value. To how many digits should the result be rounded.
 #'
-#' @return Vector with rounded percentages. The names of the vector contain the
-#' values + "%" for use in graphical output.
+#' @return Vector with rounded percentages + "%" for use in graphical output.
 #'
 #' @examples
 #' percentify(1:10 / 10)
@@ -19,5 +18,5 @@ percentify <-
   function(.x, .digits = 0)
   {
     round(.x * 100, .digits) %>%
-      stats::setNames(., stringr::str_c(., "%"))
+      stringr::str_c(., "%")
   }

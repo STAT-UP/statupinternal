@@ -28,3 +28,7 @@ outside <- function(.x, .lower, .upper, .incbounds=TRUE)
 {
   outside(.x, .bounds[[1L]], .bounds[[2L]], .incbounds = TRUE)
 }
+
+#' @rdname outside
+#' @export
+`%notbetween%` <- `%outside%`

@@ -6,17 +6,24 @@
 #' @param .expr Expression to evaluate. By default the last element of ...
 #' @param .exports List of objects to export. By default taken from everything but the last element of ...
 #' @param .conditions List of conditions to check. Usually defined in ...
+#' @param .env Environment. Where to provide the objects. By default the
+#'             environment where the function was executed.
 #' @param .quiet Logical. Should the exports be printed to stdout?
 #'
 #' @examples
+#'
+#' # This provides X and Y. The variables a and beta are not exported
+#' # as they are not specified in ...
 #' provide(
 #'   X = list(dim(X) == c(100,4),
 #'            is.numeric(X)),
 #'   Y,
 #'   NROW(Y)==NROW(X),
 #'   {
-#'     X <- matrix(rnorm(100*4), ncol=4)
-#'     beta <- rnorm(4)
+#'     a <- 4
+#'
+#'     X <- matrix(rnorm(100*a), ncol=a)
+#'     beta <- rnorm(a)
 #'
 #'     Y <- X %*% beta + rnorm(100)
 #'   }
@@ -24,10 +31,15 @@
 #'
 #' @export
 provide <-
-  function(..., .expr = NULL, .exports = NULL, .conditions = NULL, .quiet = FALSE)
+  function(...,
+           .expr = NULL,
+           .exports = NULL,
+           .conditions = NULL,
+           .env = parent.frame(),
+           .quiet = FALSE)
   {
     env <- new.env()
-    parent <- parent.frame()
+    parent <- .env
 
     ##### Find and Evaluate .expr #####
     .dots <- match.call(expand.dots = FALSE)$...
@@ -83,7 +95,7 @@ provide <-
       # conditions can be iterative so we need a loop
       for(i in seq_along(.conditions))
       {
-        if(.conditions[[i]][[1]] == as.symbol("list"))
+        if(isTRUE(.conditions[[i]][[1]] == as.symbol("list")))
         {
           eval(call("do.call",
                     what = "stopifnot",
@@ -103,17 +115,18 @@ provide <-
       .exports,
       function(var)
         assign(var,
-               get(var,envir = env),
+               get(var, envir = env),
                envir = parent)
     )
 
-    if(.quiet == FALSE)
+    if(!isTRUE(.quiet))
       message("Providing variables:\n",
               paste(sort(.exports),
                     collapse = ", "))
 
     ##### Return Vector with Names of Exported Objects #####
-    invisible(.exports)
+    invisible(list(provided = .exports,
+                   all.objects = ls(env)))
   }
 
 
