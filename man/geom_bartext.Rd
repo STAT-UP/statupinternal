@@ -9,7 +9,7 @@ work identical to \code{geom_col} or \code{geom_text}.}
 \format{An object of class \code{GeomBarText} (inherits from \code{Geom}, \code{ggproto}) of length 5.}
 \usage{
 geom_bartext(mapping = NULL, data = NULL, position = "identity", ...,
-  width = NULL, just_mirror_cutoff = 0.9, fontcolor = c("grey15",
+  width = NULL, just_mirror_cutoff = c(0.1, 0.9), fontcolor = c("grey15",
   "grey85"), parse = FALSE, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
@@ -36,12 +36,13 @@ GeomBarText
 \item 
 }}
 
-\item{just_mirror_cutoff}{Numeric value between 0 and 1. The default of 0.9
+\item{just_mirror_cutoff}{Two numeric values between 0 and 1. The default of
+0.9 for the second value
 means that if the text is supposed to appear
 \emph{outside} the bars then for values larger (in
-absolute terms) than 90% of the data this is
-flipped to appear inside. And vice versa (in that
-case a value of e.g. 0.1 will make more sense).
+absolute terms) than 90% of the data range this is
+flipped to appear inside. And vice versa for text
+inside bars and the first value of just_mirror_cutoff.
 This avoids text getting cutoff by the edge of
 the plot or text obscuring the bars for very
 small values. Set it to 0 or 1 to switch off.}

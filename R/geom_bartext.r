@@ -14,12 +14,13 @@
 #' @param position -
 #' @param ... -
 #' @param width -
-#' @param just_mirror_cutoff Numeric value between 0 and 1. The default of 0.9
+#' @param just_mirror_cutoff Two numeric values between 0 and 1. The default of
+#'                           0.9 for the second value
 #'                           means that if the text is supposed to appear
 #'                           *outside* the bars then for values larger (in
-#'                           absolute terms) than 90% of the data this is
-#'                           flipped to appear inside. And vice versa (in that
-#'                           case a value of e.g. 0.1 will make more sense).
+#'                           absolute terms) than 90% of the data range this is
+#'                           flipped to appear inside. And vice versa for text
+#'                           inside bars and the first value of just_mirror_cutoff.
 #'                           This avoids text getting cutoff by the edge of
 #'                           the plot or text obscuring the bars for very
 #'                           small values. Set it to 0 or 1 to switch off.
@@ -80,7 +81,7 @@ geom_bartext <- function(mapping = NULL,
                          position = "identity",
                          ...,
                          width = NULL,
-                         just_mirror_cutoff = 0.9,
+                         just_mirror_cutoff = c(0.1, 0.9),
                          fontcolor = c("grey15", "grey85"),
                          parse = FALSE,
                          na.rm = FALSE,
@@ -117,7 +118,7 @@ GeomBarText <-
 
     required_aes = c("x", "y"),
 
-    default_aes = list(colour = NULL,
+    default_aes = list(colour = NA,
                        fill = "steelblue",
                        size = 0.5,
                        fontsize = 3.88,
@@ -148,11 +149,11 @@ GeomBarText <-
                           width = NULL,
                           na.rm = FALSE,
                           parse = FALSE,
-                          just_mirror_cutoff = 0.9,
+                          just_mirror_cutoff = c(0.1, 0.9),
                           check_overlap = FALSE,
                           fontcolor = c("grey15", "grey85"))
     {
-      # browser()
+#      browser()
       ##### > Bar Grob #####
       col_grob <- GeomCol$draw_panel(data, params, coord, width)
 
@@ -181,10 +182,10 @@ GeomBarText <-
 
       ind <- (
         data$injust < 0.5 &
-          data$y %outside% {just_mirror_cutoff * params[[range]]}
+          data$y %outside% {just_mirror_cutoff[2] * params[[range]]}
       ) | (
         data$injust > 0.5 &
-          !data$y %outside% {just_mirror_cutoff * params[[range]]}
+          !data$y %outside% {(just_mirror_cutoff[1]) * params[[range]]}
       )
 
       ind <- which(ind)
@@ -194,7 +195,7 @@ GeomBarText <-
       data$injust <- 0.5 + sign(data$y) * (data$injust - 0.5)
 
 
-      data <- setnames(data, "injust", just)
+      data <- data.table::setnames(data, "injust", just)
 
 
       ##### >> Set text color #####
