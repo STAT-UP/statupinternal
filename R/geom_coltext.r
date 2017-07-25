@@ -76,7 +76,7 @@
 #'
 #' @import ggplot2
 #' @export
-geom_bartext <- function(mapping = NULL,
+geom_coltext <- function(mapping = NULL,
                          data = NULL,
                          position = "identity",
                          ...,
@@ -92,7 +92,7 @@ geom_bartext <- function(mapping = NULL,
     data = data,
     mapping = mapping,
     stat = "identity",
-    geom = GeomBarText,
+    geom = GeomColText,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -107,14 +107,19 @@ geom_bartext <- function(mapping = NULL,
   )
 }
 
-#' @rdname geom_bartext
+#' @rdname geom_coltext
+#'
+#' @export
+geom_bartext <- geom_coltext
+
+#' @rdname geom_coltext
 #'
 #' @import ggplot2
 #' @export
-GeomBarText <-
+GeomColText <-
   ggplot2::ggproto(
-    "GeomBarText",
-    ggplot2::Geom,
+    "GeomColText",
+    ggplot2::GeomRect,
 
     required_aes = c("x", "y"),
 
@@ -153,7 +158,6 @@ GeomBarText <-
                           check_overlap = FALSE,
                           fontcolor = c("grey15", "grey85"))
     {
-#      browser()
       ##### > Bar Grob #####
       col_grob <- GeomCol$draw_panel(data, params, coord, width)
 
@@ -224,14 +228,15 @@ GeomBarText <-
       })
 
       ##### >> Create Text grob #####
+
       text_grob <- GeomText$draw_panel(data, params, coord, parse, na.rm,
                                        check_overlap)
 
-    #  browser()
+      #  browser()
       ##### > Output #####
-      ggplot2:::ggname("geom_bartext",
+      ggplot2:::ggname("geom_coltext",
                        grid::grobTree(col_grob,
-                                text_grob))
+                                      text_grob))
     }
   )
 
