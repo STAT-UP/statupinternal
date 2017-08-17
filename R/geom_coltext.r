@@ -92,7 +92,7 @@ geom_coltext <- function(mapping = NULL,
     data = data,
     mapping = mapping,
     stat = "identity",
-    geom = GeomColText,
+    geom = GeomColtext,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -116,9 +116,9 @@ geom_bartext <- geom_coltext
 #'
 #' @import ggplot2
 #' @export
-GeomColText <-
+GeomColtext <-
   ggplot2::ggproto(
-    "GeomColText",
+    "GeomColtext",
     ggplot2::GeomRect,
 
     required_aes = c("x", "y"),

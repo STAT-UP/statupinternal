@@ -12,5 +12,5 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-Imports: ensurer, data.table, stringr, magrittr, ggplot2, grid
+Imports: ensurer, data.table, stringr, stringi, magrittr, ggplot2, grid
 Suggests: testthat

@@ -4,10 +4,10 @@
 \name{geom_coltext}
 \alias{geom_coltext}
 \alias{geom_bartext}
-\alias{GeomColText}
+\alias{GeomColtext}
 \title{Bar Plot with Numbers at the Ends of the Bars. Options not mentioned here
 work identical to \code{geom_col} or \code{geom_text}.}
-\format{An object of class \code{GeomColText} (inherits from \code{GeomRect}, \code{Geom}, \code{ggproto}) of length 5.}
+\format{An object of class \code{GeomColtext} (inherits from \code{GeomRect}, \code{Geom}, \code{ggproto}) of length 5.}
 \usage{
 geom_coltext(mapping = NULL, data = NULL, position = "identity", ...,
   width = NULL, just_mirror_cutoff = c(0.1, 0.9), fontcolor = c("grey15",
@@ -19,7 +19,7 @@ geom_bartext(mapping = NULL, data = NULL, position = "identity", ...,
   "grey85"), parse = FALSE, na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE)
 
-GeomColText
+GeomColtext
 }
 \arguments{
 \item{mapping}{\itemize{
