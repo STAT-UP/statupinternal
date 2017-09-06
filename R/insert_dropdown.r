@@ -9,7 +9,7 @@
 #' include in the RMarkdown.
 #'
 #' \preformatted{```{r, results = 'asis'}
-#' insert_dropdown_html()
+#' statupinternal::insert_dropdown_html()
 #' ```}
 #'
 #' or
@@ -19,7 +19,7 @@
 #' output:
 #'   html_document:
 #'     includes:
-#'       after_body: `insert_dropdown_location()`
+#'       after_body: `statupinternal::insert_dropdown_location()`
 #' ---
 #'
 #' # Header1 {.tabset .tabset-dropdown}

@@ -51,10 +51,12 @@ round_sensibly <- function(
   ensure_that(.digits, is.numeric)
   type_logical_scalar(.separation)
 
-  # if the vector is all NA or there is only one valid value return the input.
+  ##### if the vector is all NA or there is only one valid value return the input. #####
   if ( all(is.na(.x)) ||
        range(.x, na.rm = TRUE) %>% diff %>% {. == 0} )
     return(.x)
+
+  ##### else #####
 
   # find the power of 10 that separates the values of the input
   sig.level <-
