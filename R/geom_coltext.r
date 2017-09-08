@@ -14,6 +14,15 @@
 #' @param position -
 #' @param ... -
 #' @param width -
+#' @param center_text Logical value. If `TRUE` the text will be centered within
+#'                    its respective bar.
+#' @param just_mirror Logical value. If `TRUE` then the justification of the
+#'                    text will be mirrored at the edge of the bar for the
+#'                    largest and smallest values (see `just_mirror_cutoff`
+#'                    below). E.g. if the text is outside the bars then for
+#'                    the largest values it will be inside the bars.
+#'                    This prevents text from being cut off by the
+#'                    edges of the plot.
 #' @param just_mirror_cutoff Two numeric values between 0 and 1. The default of
 #'                           0.9 for the second value
 #'                           means that if the text is supposed to appear
@@ -49,7 +58,7 @@
 #' * fontsize - the size `aes` of geom_text
 #' * angle
 #' * **injust** - like `hjust` and `vjust` but it represents the "inward"
-#'                justification. A value of 0 will be just outside and a
+#'                justification. A value of -1 will be just outside and a
 #'                value of 1 just inside the bar border.
 #' * family
 #' * fontface
@@ -80,7 +89,10 @@ geom_coltext <- function(mapping = NULL,
                          data = NULL,
                          position = "identity",
                          ...,
+                         stat = "identity",
                          width = NULL,
+                         center_text = FALSE,
+                         just_mirror = TRUE,
                          just_mirror_cutoff = c(0.1, 0.9),
                          fontcolor = c("grey15", "grey85"),
                          parse = FALSE,
@@ -91,13 +103,15 @@ geom_coltext <- function(mapping = NULL,
   ggplot2::layer(
     data = data,
     mapping = mapping,
-    stat = "identity",
+    stat = stat,
     geom = GeomColtext,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
       width = width,
+      center_text = center_text,
+      just_mirror = just_mirror,
       just_mirror_cutoff = just_mirror_cutoff,
       fontcolor = fontcolor,
       parse = FALSE,
@@ -130,7 +144,7 @@ GeomColtext <-
                        linetype = 1,
                        alpha = NA,
                        angle = 0,
-                       injust = -0.2,
+                       injust = 1,
                        family = "",
                        fontface = 1,
                        lineheight = 1.2),
@@ -151,18 +165,19 @@ GeomColtext <-
     },
 
     draw_panel = function(self, data, params, coord,
+                          stat = "identity",
                           width = NULL,
                           na.rm = FALSE,
                           parse = FALSE,
+                          center_text = FALSE,
+                          just_mirror = TRUE,
                           just_mirror_cutoff = c(0.1, 0.9),
-                          check_overlap = FALSE,
                           fontcolor = c("grey15", "grey85"))
     {
       ##### > Bar Grob #####
       col_grob <- GeomCol$draw_panel(data, params, coord, width)
 
       ##### > Text Grob #####
-
 
       ##### >> Small stuff #####
 
@@ -175,6 +190,7 @@ GeomColtext <-
 
       ##### >> Adjust the injust #####
 
+      ##### >>> React to coord_flip #####
       if("CoordFlip" %in% class(coord))
       {
         just <- "hjust"
@@ -184,23 +200,32 @@ GeomColtext <-
         range <- "y.range"
       }
 
-      ind <- (
-        data$injust < 0.5 &
-          data$y %outside% {just_mirror_cutoff[2] * params[[range]]}
-      ) | (
-        data$injust > 0.5 &
-          !data$y %outside% {(just_mirror_cutoff[1]) * params[[range]]}
-      )
+      ##### >>> Mirror large and small values #####
+      if (isTRUE(just_mirror))
+      {
+        ind <- (
+          data$injust < 0.5 &
+            data$y %outside% {just_mirror_cutoff[2] * params[[range]]}
+        ) | (
+          data$injust > 0.5 &
+            !data$y %outside% {(just_mirror_cutoff[1]) * params[[range]]}
+        )
 
-      ind <- which(ind)
-      data$injust[ind] <- 1 - data$injust[ind]
+        ind <- which(ind)
+        data$injust[ind] <- - data$injust[ind]
 
-      # Flip value for negative y
-      data$injust <- 0.5 + sign(data$y) * (data$injust - 0.5)
+        # Flip value for negative y
+        data$injust <- 0.5 + sign(data$y) * (data$injust - 0.5)
+      }
 
+      data[[just]] <- data$injust / 2 + 0.5
 
-      data <- data.table::setnames(data, "injust", just)
+      ##### >> Center Text #####
 
+      if(isTRUE(center_text))
+      {
+        data$y <- (data$ymax + data$ymin) / 2
+      }
 
       ##### >> Set text color #####
 
@@ -228,7 +253,6 @@ GeomColtext <-
       })
 
       ##### >> Create Text grob #####
-
       text_grob <- GeomText$draw_panel(data, params, coord, parse, na.rm,
                                        check_overlap)
 

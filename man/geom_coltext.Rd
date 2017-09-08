@@ -10,14 +10,16 @@ work identical to \code{geom_col} or \code{geom_text}.}
 \format{An object of class \code{GeomColtext} (inherits from \code{GeomRect}, \code{Geom}, \code{ggproto}) of length 5.}
 \usage{
 geom_coltext(mapping = NULL, data = NULL, position = "identity", ...,
-  width = NULL, just_mirror_cutoff = c(0.1, 0.9), fontcolor = c("grey15",
-  "grey85"), parse = FALSE, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  stat = "identity", width = NULL, center_text = FALSE,
+  just_mirror = TRUE, just_mirror_cutoff = c(0.1, 0.9),
+  fontcolor = c("grey15", "grey85"), parse = FALSE, na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE)
 
 geom_bartext(mapping = NULL, data = NULL, position = "identity", ...,
-  width = NULL, just_mirror_cutoff = c(0.1, 0.9), fontcolor = c("grey15",
-  "grey85"), parse = FALSE, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  stat = "identity", width = NULL, center_text = FALSE,
+  just_mirror = TRUE, just_mirror_cutoff = c(0.1, 0.9),
+  fontcolor = c("grey15", "grey85"), parse = FALSE, na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE)
 
 GeomColtext
 }
@@ -41,6 +43,17 @@ GeomColtext
 \item{width}{\itemize{
 \item 
 }}
+
+\item{center_text}{Logical value. If \code{TRUE} the text will be centered within
+its respective bar.}
+
+\item{just_mirror}{Logical value. If \code{TRUE} then the justification of the
+text will be mirrored at the edge of the bar for the
+largest and smallest values (see \code{just_mirror_cutoff}
+below). E.g. if the text is outside the bars then for
+the largest values it will be inside the bars.
+This prevents text from being cut off by the
+edges of the plot.}
 
 \item{just_mirror_cutoff}{Two numeric values between 0 and 1. The default of
 0.9 for the second value
@@ -95,7 +108,7 @@ The following \code{aes} are used by \code{geom_text}
 \item fontsize - the size \code{aes} of geom_text
 \item angle
 \item \strong{injust} - like \code{hjust} and \code{vjust} but it represents the "inward"
-justification. A value of 0 will be just outside and a
+justification. A value of -1 will be just outside and a
 value of 1 just inside the bar border.
 \item family
 \item fontface
