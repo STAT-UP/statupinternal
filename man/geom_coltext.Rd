@@ -12,14 +12,14 @@ work identical to \code{geom_col} or \code{geom_text}.}
 geom_coltext(mapping = NULL, data = NULL, position = "identity", ...,
   stat = "identity", width = NULL, center_text = FALSE,
   just_mirror = TRUE, just_mirror_cutoff = c(0.1, 0.9),
-  fontcolor = c("grey15", "grey85"), parse = FALSE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  fontcolor = c(STAT.UP.Grey, STAT.UP.Lightgrey), parse = FALSE,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 geom_bartext(mapping = NULL, data = NULL, position = "identity", ...,
   stat = "identity", width = NULL, center_text = FALSE,
   just_mirror = TRUE, just_mirror_cutoff = c(0.1, 0.9),
-  fontcolor = c("grey15", "grey85"), parse = FALSE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+  fontcolor = c(STAT.UP.Grey, STAT.UP.Lightgrey), parse = FALSE,
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
 GeomColtext
 }
@@ -125,17 +125,17 @@ library(ggplot2)
 X <- data.frame(x = 1:5, y = sample(1:100, 5))
 
 ggplot(X, aes(x, y)) +
-  geom_bartext(injust = -0.5)
+  geom_coltext(injust = -1.5)
 
 ggplot(X, aes(x, y)) +
-  geom_bartext(injust = 1.5)
+  geom_coltext(injust = 1.5)
 
 ggplot(X, aes(x, y)) +
-  geom_bartext(injust = 1.5) +
+  geom_coltext(injust = 1.5) +
   coord_flip()
 
 ggplot(X, aes(x, y, label = percentify(y))) +
-  geom_bartext(injust = -0.5) +
+  geom_coltext(injust = -1.5) +
   coord_flip()
 
 }

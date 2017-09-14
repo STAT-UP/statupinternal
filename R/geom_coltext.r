@@ -87,7 +87,7 @@
 #' @export
 geom_coltext <- function(mapping = NULL,
                          data = NULL,
-                         position = "identity",
+                         position = "dodge",
                          ...,
                          stat = "identity",
                          width = NULL,
@@ -144,7 +144,7 @@ GeomColtext <-
                        linetype = 1,
                        alpha = NA,
                        angle = 0,
-                       injust = 1,
+                       injust = 1.3,
                        family = "",
                        fontface = 1,
                        lineheight = 1.2),
