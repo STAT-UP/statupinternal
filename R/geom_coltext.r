@@ -70,17 +70,17 @@
 #' X <- data.frame(x = 1:5, y = sample(1:100, 5))
 #'
 #' ggplot(X, aes(x, y)) +
-#'   geom_bartext(injust = -0.5)
+#'   geom_coltext(injust = -1.5)
 #'
 #' ggplot(X, aes(x, y)) +
-#'   geom_bartext(injust = 1.5)
+#'   geom_coltext(injust = 1.5)
 #'
 #' ggplot(X, aes(x, y)) +
-#'   geom_bartext(injust = 1.5) +
+#'   geom_coltext(injust = 1.5) +
 #'   coord_flip()
 #'
 #' ggplot(X, aes(x, y, label = percentify(y))) +
-#'   geom_bartext(injust = -0.5) +
+#'   geom_coltext(injust = -1.5) +
 #'   coord_flip()
 #'
 #' @import ggplot2
@@ -94,7 +94,7 @@ geom_coltext <- function(mapping = NULL,
                          center_text = FALSE,
                          just_mirror = TRUE,
                          just_mirror_cutoff = c(0.1, 0.9),
-                         fontcolor = c("grey15", "grey85"),
+                         fontcolor = c(STAT.UP.Grey, STAT.UP.Lightgrey),
                          parse = FALSE,
                          na.rm = FALSE,
                          show.legend = NA,
@@ -138,7 +138,7 @@ GeomColtext <-
     required_aes = c("x", "y"),
 
     default_aes = list(colour = NA,
-                       fill = "steelblue",
+                       fill = STAT.UP.Blue,
                        size = 0.5,
                        fontsize = 3.88,
                        linetype = 1,
@@ -172,7 +172,7 @@ GeomColtext <-
                           center_text = FALSE,
                           just_mirror = TRUE,
                           just_mirror_cutoff = c(0.1, 0.9),
-                          fontcolor = c("grey15", "grey85"))
+                          fontcolor = c(STAT.UP.Grey, STAT.UP.Lightgrey))
     {
       ##### > Bar Grob #####
       col_grob <- GeomCol$draw_panel(data, params, coord, width)
@@ -253,8 +253,7 @@ GeomColtext <-
       })
 
       ##### >> Create Text grob #####
-      text_grob <- GeomText$draw_panel(data, params, coord, parse, na.rm,
-                                       check_overlap)
+      text_grob <- GeomText$draw_panel(data, params, coord, parse, na.rm)
 
       #  browser()
       ##### > Output #####
