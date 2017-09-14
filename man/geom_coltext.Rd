@@ -9,13 +9,13 @@
 work identical to \code{geom_col} or \code{geom_text}.}
 \format{An object of class \code{GeomColtext} (inherits from \code{GeomRect}, \code{Geom}, \code{ggproto}) of length 5.}
 \usage{
-geom_coltext(mapping = NULL, data = NULL, position = "identity", ...,
+geom_coltext(mapping = NULL, data = NULL, position = "dodge", ...,
   stat = "identity", width = NULL, center_text = FALSE,
   just_mirror = TRUE, just_mirror_cutoff = c(0.1, 0.9),
   fontcolor = c(STAT.UP.Grey, STAT.UP.Lightgrey), parse = FALSE,
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 
-geom_bartext(mapping = NULL, data = NULL, position = "identity", ...,
+geom_bartext(mapping = NULL, data = NULL, position = "dodge", ...,
   stat = "identity", width = NULL, center_text = FALSE,
   just_mirror = TRUE, just_mirror_cutoff = c(0.1, 0.9),
   fontcolor = c(STAT.UP.Grey, STAT.UP.Lightgrey), parse = FALSE,

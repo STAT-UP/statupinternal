@@ -52,4 +52,4 @@ ggplot(Y, aes(x, y, label = percentify(y))) +
 
 
 ggplot(Y, aes(x, y, label = percentify(y), fill = g)) +
-  geom_coltext(injust = -0.5, position = "fill")
+  geom_coltext(injust = 0, position = "fill", center_text = TRUE)

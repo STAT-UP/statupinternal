@@ -27,8 +27,8 @@ as_numeric_comma <-
     ensure_that(.group.separator,
                 is.null(.) || (is.character(.) && length(.) == 1))
 
-    if(!is.null(.group.separator))
-      .x <- stringr::str_replace(.x, fixed("."), "")
+    if(stringr::str_length(.group.separator) > 0)
+      .x <- stringr::str_replace_all(.x, fixed(.group.separator), "")
 
     stringr::str_replace(.x, fixed(","), ".") %>%
       as.numeric
