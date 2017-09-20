@@ -18,5 +18,6 @@ which has no attributes (not even names).
 isFALSE(FALSE)
 isFALSE(0)
 isFALSE(c(FALSE, FALSE))
+isFALSE(1 == 0)
 
 }
