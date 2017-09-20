@@ -137,7 +137,8 @@ GeomColtext <-
 
     required_aes = c("x", "y"),
 
-    default_aes = list(colour = NA,
+    default_aes = list(label = NULL,
+                       colour = NA,
                        fill = STAT.UP.Blue,
                        size = 0.5,
                        fontsize = 3.88,

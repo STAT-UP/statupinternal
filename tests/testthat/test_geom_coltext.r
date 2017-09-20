@@ -25,8 +25,8 @@ ggplot(X, aes(x, y)) +
   geom_bartext(injust = 1.5)
 
 
-ggplot(Y, aes(x, y, label = percentify(y), fill = g)) +
-  geom_coltext(injust = -0.5) +
+ggplot(Y, aes(x, y, fill = g)) +
+  geom_coltext(aes(label = percentify(y)), injust = -0.5) +
   coord_flip()
 
 ggplot(Y, aes(x, y,
